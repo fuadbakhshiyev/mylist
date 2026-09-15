@@ -1,0 +1,95 @@
+// Profile sections in the order they appear everywhere: what's next, what's done, then taste
+export const PROFILE_SECTIONS = [
+  {
+    key: 'watchlist',
+    list: 'watchlist',
+    kind: 'title',
+    title: 'Watchlist',
+    rowTitle: 'Watchlist',
+    defaultSort: 'order',
+    sorts: ['order', 'added', 'release', 'title'],
+    empty: {
+      headline: 'Your watchlist is empty',
+      body: 'Save titles you want to watch with the + on any poster or title page.',
+      inline: 'Titles you save for later show up here.',
+      cta: 'Browse the library',
+      ctaTo: '/library',
+    },
+  },
+  {
+    key: 'watched',
+    list: 'watched',
+    kind: 'title',
+    title: 'Watched',
+    rowTitle: 'Recently watched',
+    defaultSort: 'order',
+    sorts: ['order', 'added', 'release', 'title', 'rating'],
+    empty: {
+      headline: 'Nothing marked as watched yet',
+      body: 'Tap the check on any poster to track your progress through the MCU.',
+      inline: 'Mark titles as watched to track your progress.',
+      cta: 'Open the timeline',
+      ctaTo: '/timeline',
+    },
+  },
+  {
+    key: 'favorites',
+    list: 'favorites',
+    kind: 'title',
+    title: 'Favorite titles',
+    rowTitle: 'Favorite titles',
+    defaultSort: 'added',
+    sorts: ['added', 'order', 'release', 'title'],
+    empty: {
+      headline: 'No favorite titles yet',
+      body: 'Tap the heart on a poster or title page to keep your all-time favorites here.',
+      inline: 'Your favorite titles show up here.',
+      cta: 'Browse the library',
+      ctaTo: '/library',
+    },
+  },
+  {
+    key: 'actors',
+    list: 'likedActors',
+    kind: 'actor',
+    title: 'Favorite actors',
+    rowTitle: 'Favorite actors',
+    defaultSort: 'added',
+    sorts: ['added', 'name', 'appearances'],
+    empty: {
+      headline: 'No favorite actors yet',
+      body: 'Open any actor on the Characters page and tap Favorite.',
+      inline: 'No favorite actors yet.',
+      cta: 'Browse actors',
+      ctaTo: '/characters?tab=actors',
+    },
+  },
+  {
+    key: 'heroes',
+    list: 'likedHeroes',
+    kind: 'hero',
+    title: 'Favorite heroes',
+    rowTitle: 'Favorite heroes',
+    defaultSort: 'added',
+    sorts: ['added', 'name'],
+    empty: {
+      headline: 'No favorite heroes yet',
+      body: 'Open any hero on the Characters page and tap Favorite.',
+      inline: 'No favorite heroes yet.',
+      cta: 'Browse heroes',
+      ctaTo: '/characters?tab=heroes',
+    },
+  },
+];
+
+export const sectionByKey = Object.fromEntries(PROFILE_SECTIONS.map(section => [section.key, section]));
+
+export const SORT_LABELS = {
+  order: 'Watch order',
+  added: 'Recently added',
+  release: 'Release date',
+  title: 'Title A–Z',
+  rating: 'TMDB rating',
+  name: 'Name A–Z',
+  appearances: 'Most MCU appearances',
+};

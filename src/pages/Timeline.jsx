@@ -5,28 +5,20 @@ import MovieCard from '../components/MovieCard';
 import SidebarFilter from '../components/SidebarFilter';
 import UpcomingMovies from '../components/UpcomingMovies';
 import JustReleased from '../components/JustReleased';
-import { Check } from 'lucide-react';
+import { useLibrary } from '../context/LibraryContext';
+import { titleMinutes } from '../utils/titleStats';
+import { Search } from 'lucide-react';
 
 const Timeline = () => {
-  const [activeType, setActiveType] = useState('Tümü'); // 'Tümü', 'İzlenmeyenler', 'Filmler', 'Diziler'
+  const [activeType, setActiveType] = useState('All'); // 'All', 'Unwatched', 'Movies', 'Series'
   const [searchQuery, setSearchQuery] = useState('');
-  const [watchedMovies, setWatchedMovies] = useState(new Set());
+  const { watchedIds: watchedMovies } = useLibrary();
   const [filterMode, setFilterMode] = useState('newbie'); // 'newbie', 'doomsday', 'rewatch'
+  const [showNonMarvel, setShowNonMarvel] = useState(true);
+  const [showSpoilers, setShowSpoilers] = useState(false);
 
   
   const allGroups = getGroupedTimeline();
-
-  const toggleWatch = (id) => {
-    setWatchedMovies(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
-    });
-  };
 
   const filteredGroups = useMemo(() => {
     return allGroups.map(group => {
@@ -50,94 +42,105 @@ const Timeline = () => {
             return false;
           }
 
-          // Filter by Type (Tümü, İzlenmeyenler, Filmler, Diziler)
-          if (activeType === 'İzlenmeyenler') {
+          // Filter by Non-Marvel Studios
+          if (!showNonMarvel && item.nonMarvelStudios) {
+            return false;
+          }
+
+          // Filter by Type (All, Unwatched, Movies, Series, Special)
+          if (activeType === 'Unwatched') {
             if (watchedMovies.has(item.id)) return false;
-          } else if (activeType === 'Filmler') {
-            if (item.type !== 'FİLM') return false;
-          } else if (activeType === 'Diziler') {
-            if (item.type !== 'DİZİ') return false;
+          } else if (activeType === 'Movies') {
+            if (item.type.toLowerCase() !== 'movie' && item.type.toLowerCase() !== 'film') return false;
+          } else if (activeType === 'Series') {
+            if (item.type.toLowerCase() !== 'series' && item.type.toLowerCase() !== 'tv') return false;
+          } else if (activeType === 'Special') {
+            if (item.type.toLowerCase() !== 'special' && item.type.toLowerCase() !== 'one-shot') return false;
           }
 
           return true;
         })
       };
     }).filter(group => group.items.length > 0);
-  }, [allGroups, activeType, searchQuery, watchedMovies, filterMode]);
+  }, [allGroups, activeType, searchQuery, watchedMovies, filterMode, showNonMarvel]);
+
+  // Progress numbers for the active mode, from the titles that mode actually contains
+  const modeStats = useMemo(() => {
+    const modeFilters = filterMode === 'doomsday' ? doomsdayFilters : filterMode === 'rewatch' ? rewatchFilters : null;
+    const items = allGroups
+      .flatMap(group => group.items)
+      .filter(item => !modeFilters || modeFilters[item.title])
+      .map(item => (modeFilters ? { ...item, ...modeFilters[item.title] } : item));
+    const remaining = items.filter(item => !watchedMovies.has(item.id));
+    return {
+      total: items.length,
+      watched: items.length - remaining.length,
+      remaining: remaining.length,
+      // Modes relabel titles ("Essential for Doomsday", "★ MCU Essential"), so match the word, not the exact label
+      essentialRemaining: remaining.filter(item => /essential/i.test(item.label || '')).length,
+      remainingHours: Math.round(remaining.reduce((sum, item) => sum + titleMinutes(item.id), 0) / 60),
+    };
+  }, [allGroups, filterMode, watchedMovies]);
 
   return (
-    <div className="timeline-layout">
-      {/* Left Sidebar */}
-      <SidebarFilter 
-        activeType={activeType} 
-        setActiveType={setActiveType}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        filterMode={filterMode}
-      />
-
+    <div className="timeline-container">
       {/* Main Content */}
       <div className="timeline-content">
-        <div className="section-header animate-fade-in">
+        <div className="section-header animate-fade-in" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h1>MCU Timeline</h1>
+          <div className="search-section" style={{ margin: 0, width: '300px' }}>
+            <div className="search-input-wrap">
+              <Search size={16} className="search-icon" />
+              <input 
+                type="text" 
+                placeholder="Search..." 
+                className="search-input"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="filter-options animate-fade-in" style={{ marginTop: '30px' }}>
-          <div 
-            className={`filter-card ${filterMode === 'newbie' ? 'active' : ''}`}
-            onClick={() => setFilterMode('newbie')}
-          >
-            {filterMode === 'newbie' && <div className="filter-check"><Check size={16} /></div>}
-            <div className="filter-icon bg-red">M</div>
-            <div className="filter-title">Marvel'da Yeniyim</div>
-            <div className="filter-subtitle">Her şey, sırasıyla, ilk izleyiş için</div>
-          </div>
-
-          <div 
-            className={`filter-card doomsday-card ${filterMode === 'doomsday' ? 'active' : ''}`}
-            onClick={() => setFilterMode('doomsday')}
-          >
-            {filterMode === 'doomsday' && <div className="filter-check"><Check size={16} /></div>}
-            <div className="filter-icon bg-green">☢</div>
-            <div className="filter-title">Doomsday'e Hazırlan</div>
-            <div className="filter-subtitle">Sadece o filme götürenler</div>
-          </div>
-
-          <div 
-            className={`filter-card doomsday-card ${filterMode === 'rewatch' ? 'active' : ''}`}
-            onClick={() => setFilterMode('rewatch')}
-          >
-            {filterMode === 'rewatch' && <div className="filter-check"><Check size={16} /></div>}
-            <div className="filter-icon" style={{ background: 'transparent', color: 'white', border: 'none', fontSize: '2rem' }}>A</div>
-            <div className="filter-title">Temelleri Yeniden İzle</div>
-            <div className="filter-subtitle">Hepsini izledin mi? Tekrar izlemeye değerler</div>
-          </div>
+        <div style={{ marginTop: '20px', marginBottom: '30px' }}>
+          <SidebarFilter 
+            activeType={activeType} 
+            setActiveType={setActiveType}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            filterMode={filterMode}
+            setFilterMode={setFilterMode}
+            showNonMarvel={showNonMarvel}
+            setShowNonMarvel={setShowNonMarvel}
+            showSpoilers={showSpoilers}
+            setShowSpoilers={setShowSpoilers}
+          />
         </div>
 
         <div className="stats-row animate-fade-in">
           <div className="stat-card">
-            <div className="stat-value">{filterMode === 'rewatch' ? 60 : filterMode === 'doomsday' ? 71 : 165}</div>
-            <div className="stat-label">TOPLAM</div>
+            <div className="stat-value">{modeStats.total}</div>
+            <div className="stat-label">TOTAL</div>
           </div>
           <div className="stat-card">
-            <div className="stat-value">{watchedMovies.size}</div>
-            <div className="stat-label">İZLENDİ</div>
+            <div className="stat-value">{modeStats.watched}</div>
+            <div className="stat-label">WATCHED</div>
           </div>
           <div className="stat-card">
-            <div className="stat-value">{(filterMode === 'rewatch' ? 60 : filterMode === 'doomsday' ? 71 : 165) - watchedMovies.size}</div>
-            <div className="stat-label">KALAN</div>
+            <div className="stat-value">{modeStats.remaining}</div>
+            <div className="stat-label">REMAINING</div>
           </div>
           <div className="stat-card">
-            <div className="stat-value">{filterMode === 'rewatch' ? 51 : filterMode === 'doomsday' ? 54 : 52}</div>
-            <div className="stat-label">TEMEL KALANLAR</div>
+            <div className="stat-value">{modeStats.essentialRemaining}</div>
+            <div className="stat-label">ESSENTIAL REMAINING</div>
           </div>
           <div className="stat-card">
-            <div className="stat-value">{filterMode === 'rewatch' ? '168SA' : filterMode === 'doomsday' ? '157SA' : '658SA'}</div>
-            <div className="stat-label">KALAN SAATLER</div>
+            <div className="stat-value">~{modeStats.remainingHours}H</div>
+            <div className="stat-label">REMAINING HOURS</div>
           </div>
         </div>
 
-        <div style={{ marginTop: '30px' }}>
+        <div>
           {filteredGroups.length === 0 && (
             <p style={{ color: 'var(--text-secondary)' }}>No titles found matching the filters.</p>
           )}
@@ -150,8 +153,7 @@ const Timeline = () => {
                   <MovieCard 
                     key={movie.id} 
                     movie={movie} 
-                    isWatched={watchedMovies.has(movie.id)}
-                    onToggleWatch={() => toggleWatch(movie.id)}
+                    showSpoilers={showSpoilers}
                   />
                 ))}
               </div>

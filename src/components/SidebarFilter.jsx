@@ -1,107 +1,145 @@
-import React from 'react';
-import { Search } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Check, ChevronDown, SlidersHorizontal } from 'lucide-react';
 
-const SidebarFilter = ({ activeType, setActiveType, searchQuery, setSearchQuery, filterMode }) => {
-  const isDoomsday = filterMode === 'doomsday';
-  const isRewatch = filterMode === 'rewatch';
+const TYPES = ['All', 'Unwatched', 'Movies', 'Series', 'Special'];
+
+const FilterDropdown = ({ label, align = 'left', children }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  // Close on outside click or Escape
+  useEffect(() => {
+    if (!open) return;
+    const handleClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    const handleKey = (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('keydown', handleKey);
+    };
+  }, [open]);
 
   return (
-    <aside className="sidebar-filter glass">
-      <div className="sidebar-header">
-        {isDoomsday ? (
-          <div className="m-logo" style={{ background: '#10b981', color: '#000', border: '2px solid #065f46' }}>☢</div>
-        ) : isRewatch ? (
-          <div className="m-logo" style={{ background: 'transparent', color: 'white', border: 'none', fontSize: '2rem' }}>A</div>
-        ) : (
-          <div className="m-logo">M</div>
-        )}
-        <h2 style={{ color: isDoomsday ? '#10b981' : isRewatch ? 'white' : 'var(--accent-color)' }}>
-          {isDoomsday ? "DOOMSDAY HAZIRLIK LİSTENİZ" : isRewatch ? "TEMELLERİ YENİDEN İZLEME LİSTEN" : "TÜM MCU HİKAYESİ"}
-        </h2>
-      </div>
-
-      <div className="filter-section">
-        <label className="filter-label">TÜR</label>
-        <div className="filter-pills">
-          {['Tümü', 'İzlenmeyenler', 'Filmler', 'Diziler'].map(type => (
-            <button
-              key={type}
-              className={`filter-pill ${activeType === type ? 'active' : ''}`}
-              onClick={() => setActiveType(type)}
-            >
-              {type}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {(!isDoomsday && !isRewatch) && (
-        <div className="filter-section">
-          <label className="filter-label">EVRENLER</label>
-          <label className="checkbox-label">
-            <input type="checkbox" defaultChecked />
-            <span>MARVEL STUDIOS DIŞI</span>
-          </label>
-          <p className="checkbox-desc">
-            Fox, Sony, Blade ve Marvel Studios dışındaki diğer yapımlar ayrı sürekliliklerdir. 
-            Karakterleri paylaştıkları ve birçoğu çoklu evrene bağlandığı için buradalar — izlemek ya da filtrelemek size kalmış.
-          </p>
+    <div className="filter-dropdown" ref={ref}>
+      <button
+        type="button"
+        className={`filter-pill filter-dropdown-trigger ${open ? 'open' : ''}`}
+        aria-haspopup="true"
+        aria-expanded={open}
+        onClick={() => setOpen(o => !o)}
+      >
+        {label}
+        <ChevronDown size={16} className="filter-dropdown-chevron" />
+      </button>
+      {open && (
+        <div className={`filter-dropdown-menu align-${align}`}>
+          {children(() => setOpen(false))}
         </div>
       )}
+    </div>
+  );
+};
 
-      <div className="search-section">
-        <div className="search-input-wrap">
-          <Search size={16} className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Ara..." 
-            className="search-input"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+const SidebarFilter = ({ activeType, setActiveType, searchQuery, setSearchQuery, filterMode, setFilterMode, showNonMarvel, setShowNonMarvel, showSpoilers, setShowSpoilers }) => {
+  const isDoomsday = filterMode === 'doomsday';
+  const isRewatch = filterMode === 'rewatch';
+  const showNonMarvelToggle = !isDoomsday && !isRewatch;
+  const activeOptionsCount = (showNonMarvelToggle && showNonMarvel ? 1 : 0) + (showSpoilers ? 1 : 0);
+
+  return (
+    <aside className="sidebar-filter">
+
+      {/* Left Side: Modes & Types */}
+      <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div className="sidebar-modes">
+          <div
+            className={`sidebar-mode-pill ${filterMode === 'newbie' ? 'active' : ''}`}
+            onClick={() => setFilterMode('newbie')}
+          >
+            <img src="https://image.tmdb.org/t/p/w500/9BBTo63ANSmhC4e6r62OJFuK2GL.jpg" alt="Newbie" className="mode-pill-img" /> New to Marvel
+          </div>
+          <div
+            className={`sidebar-mode-pill ${filterMode === 'doomsday' ? 'active' : ''}`}
+            onClick={() => setFilterMode('doomsday')}
+          >
+            <img src="https://image.tmdb.org/t/p/w500/s4v0UX1anfXm0UvloLsTTJ4v222.jpg" alt="Doomsday" className="mode-pill-img" /> Doomsday
+          </div>
+          <div
+            className={`sidebar-mode-pill ${filterMode === 'rewatch' ? 'active' : ''}`}
+            onClick={() => setFilterMode('rewatch')}
+          >
+            <img src="https://image.tmdb.org/t/p/w500/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg" alt="Rewatch" className="mode-pill-img" /> Rewatch
+          </div>
         </div>
       </div>
 
-      <div className="legend-section">
-        <div className="legend-items">
-          <div className="legend-item">
-            <span className="legend-dot" style={{ background: '#facc15' }}></span> Film
-          </div>
-          <div className="legend-item">
-            <span className="legend-dot" style={{ background: '#38bdf8' }}></span> Dizi
-          </div>
-          <div className="legend-item">
-            <span className="legend-dot" style={{ background: '#c084fc' }}></span> Özel
-          </div>
-          <div className="legend-item">
-            <span className="legend-dot" style={{ background: '#ef4444' }}></span> Dönüm Noktası
-          </div>
-          {isDoomsday ? (
+      {/* Right Side: Type & Options Dropdowns */}
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <FilterDropdown
+          label={
             <>
-              <div className="legend-item">
-                <span className="legend-circle" style={{ color: '#10b981' }}>☢</span> Temel
-              </div>
-              <div className="legend-item">
-                <span className="legend-circle">?</span> Doğrulanmadı
-              </div>
+              {activeType !== 'All' && <span className={`pill-dot dot-${activeType.toLowerCase()}`}></span>}
+              {activeType === 'All' ? 'All types' : activeType}
             </>
-          ) : (
+          }
+        >
+          {(close) => TYPES.map(type => (
+            <button
+              key={type}
+              type="button"
+              className={`filter-dropdown-item ${activeType === type ? 'active' : ''}`}
+              onClick={() => { setActiveType(type); close(); }}
+            >
+              <span className={`pill-dot dot-${type.toLowerCase()}`}></span>
+              {type}
+              {activeType === type && <Check size={16} className="filter-dropdown-check" />}
+            </button>
+          ))}
+        </FilterDropdown>
+
+        <FilterDropdown
+          align="right"
+          label={
             <>
-              <div className="legend-item">
-                <span className="legend-star">★</span> Temel
-              </div>
-              <div className="legend-item">
-                <span className="legend-circle">○</span> Opsiyonel
-              </div>
+              <SlidersHorizontal size={16} />
+              Options
+              {activeOptionsCount > 0 && <span className="filter-dropdown-count">{activeOptionsCount}</span>}
             </>
+          }
+        >
+          {() => (
+            <div className="filter-dropdown-toggles">
+              {showNonMarvelToggle && (
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    checked={showNonMarvel}
+                    onChange={(e) => setShowNonMarvel(e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                  <span className="toggle-label">Non-Marvel</span>
+                </label>
+              )}
+
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={showSpoilers}
+                  onChange={(e) => setShowSpoilers(e.target.checked)}
+                />
+                <span className="slider"></span>
+                <span className="toggle-label">Spoilers</span>
+              </label>
+            </div>
           )}
-        </div>
-        <p className="legend-desc">
-          {isDoomsday 
-            ? "Temel, hikayenin oradan geçtiği anlamına gelir. İsteğe bağlı, bir karakterin oradan geldiği anlamına gelir."
-            : "Temel, ana hikayenin oradan geçtiği anlamına gelir. Opsiyonel, atlasanız da takip edebileceğiniz anlamına gelir."}
-        </p>
+        </FilterDropdown>
       </div>
+
     </aside>
   );
 };

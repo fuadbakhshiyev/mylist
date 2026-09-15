@@ -1,0 +1,530 @@
+1. Spider-Man (Peter Parker)
+2. Miles Morales
+3. Spider-Woman (Jessica Drew)
+4. Spider-Gwen
+5. Silk (Cindy Moon)
+6. Spider-Man 2099
+7. Spider-Man Noir
+8. Scarlet Spider (Ben Reilly)
+9. Scarlet Spider (Kaine Parker)
+10. Spider-Man India
+11. Spider-Ham
+12. Spider-Punk
+13. Spider-Man (Ben Reilly)
+14. Spider-Man (Otto Octavius)
+15. Iron Man
+16. War Machine
+17. Rescue
+18. Ironheart
+19. Captain America (Steve Rogers)
+20. Captain America (Sam Wilson)
+21. Bucky Barnes
+22. U.S. Agent
+23. Thor
+24. Jane Foster
+25. Beta Ray Bill
+26. Valkyrie
+27. Mighty Thor
+28. Hulk
+29. She-Hulk
+30. Red Hulk
+31. Skaar
+32. Amadeus Cho
+33. Wolverine
+34. X-23
+35. Daken
+36. Sabretooth
+37. Cyclops
+38. Jean Grey
+39. Storm
+40. Beast
+41. Iceman
+42. Angel
+43. Archangel
+44. Rogue
+45. Gambit
+46. Nightcrawler
+47. Colossus
+48. Kitty Pryde
+49. Psylocke
+50. Jubilee
+51. Bishop
+52. Cable
+53. Havok
+54. Polaris
+55. Emma Frost
+56. Magik
+57. Sunspot
+58. Cannonball
+59. Warpath
+60. Forge
+61. Banshee
+62. Multiple Man
+63. Strong Guy
+64. Wolfsbane
+65. Mirage
+66. Karma
+67. Cypher
+68. Magma
+69. Boom-Boom
+70. Armor
+71. Pixie
+72. Dust
+73. Rockslide
+74. Anole
+75. Elixir
+76. Gentle
+77. Quentin Quire
+78. Kid Omega
+79. Hope Summers
+80. Rachel Summers
+81. Polaris
+82. Professor X
+83. Legion
+84. X-Man
+85. Fantomex
+86. Chamber
+87. Husk
+88. M
+89. Blink
+90. Northstar
+91. Aurora
+92. Firestar
+93. Havok
+94. Dazzler
+95. Longshot
+96. Domino
+97. Boom-Boom
+98. Sage
+99. Thunderbird
+100. Sunfire
+101. Doctor Strange
+102. Clea
+103. Wong
+104. Brother Voodoo
+105. Scarlet Witch
+106. Wiccan
+107. Speed
+108. America Chavez
+109. Doctor Voodoo
+110. Magik
+111. Nico Minoru
+112. Karolina Dean
+113. Molly Hayes
+114. Chase Stein
+115. Gertrude Yorkes
+116. Old Lace
+117. Hulkling
+118. Marvel Boy
+119. Kid Loki
+120. Loki
+121. Moon Knight
+122. Daredevil
+123. Elektra
+124. Punisher
+125. Luke Cage
+126. Iron Fist
+127. Jessica Jones
+128. Misty Knight
+129. Colleen Wing
+130. Echo
+131. Shang-Chi
+132. White Tiger
+133. Cloak
+134. Dagger
+135. Hellcat
+136. Tigra
+137. Mockingbird
+138. Quake
+139. Spider-Woman
+140. Paladin
+141. Night Thrasher
+142. Darkhawk
+143. Nova (Richard Rider)
+144. Nova (Sam Alexander)
+145. Star-Lord
+146. Gamora
+147. Rocket Raccoon
+148. Groot
+149. Drax
+150. Mantis
+151. Nebula
+152. Adam Warlock
+153. Phyla-Vell
+154. Moondragon
+155. Quasar
+156. Gladiator
+157. Silver Surfer
+158. Beta Ray Bill
+159. Cosmo
+160. Jack Flag
+161. Major Victory
+162. Yondu
+163. Martyr
+164. Bug
+165. Starhawk
+166. Charlie-27
+167. Nikki Gold
+168. Aleta Ogord
+169. Martinex
+170. Vance Astro
+171. Nighthawk
+172. Hyperion
+173. Blue Marvel
+174. Sentry
+175. Spectrum
+176. Captain Marvel (Carol Danvers)
+177. Captain Marvel (Monica Rambeau)
+178. Mar-Vell
+179. Genis-Vell
+180. Hulkling
+181. Phyla-Vell
+182. Quasar
+183. Binary
+184. Hazmat
+185. Hellcat
+186. Machine Man
+187. Jocasta
+188. Wonder Man
+189. Tigra
+190. Living Lightning
+191. Firebird
+192. Justice
+193. Firestar
+194. Speedball
+195. Rage
+196. Justice
+197. Triathlon
+198. Stingray
+199. Wonder Man
+200. Moondragon
+201. Ant-Man (Hank Pym)
+202. Ant-Man (Scott Lang)
+203. Ant-Man (Eric O'Grady)
+204. Wasp (Janet van Dyne)
+205. Wasp (Nadia van Dyne)
+206. Giant-Man
+207. Yellowjacket
+208. Stature
+209. Stinger
+210. Vision
+211. Viv Vision
+212. Victor Mancha
+213. Human Torch
+214. Invisible Woman
+215. Mister Fantastic
+216. Thing
+217. She-Thing
+218. Franklin Richards
+219. Valeria Richards
+220. Namor
+221. Namorita
+222. Namora
+223. Stingray
+224. Black Panther
+225. Shuri
+226. Okoye
+227. Nakia
+228. M'Baku
+229. White Tiger
+230. Ka-Zar
+231. Shanna the She-Devil
+232. Black Knight
+233. Union Jack
+234. Spitfire
+235. Captain Britain
+236. Psylocke
+237. Meggan
+238. Lionheart
+239. Faiza Hussain
+240. Excalibur
+241. Blade
+242. Ghost Rider (Johnny Blaze)
+243. Ghost Rider (Danny Ketch)
+244. Ghost Rider (Robbie Reyes)
+245. Ghost Rider (Alejandra Jones)
+246. Hellstrom
+247. Satana
+248. Man-Thing
+249. Werewolf by Night
+250. Elsa Bloodstone
+251. U.S. Agent
+252. Red Guardian
+253. Yelena Belova
+254. Black Widow (Natasha Romanoff)
+255. Winter Soldier
+256. Red Wolf
+257. Ursa Major
+258. Crimson Dynamo
+259. Darkstar
+260. Vanguard
+261. Colossus
+262. Magik
+263. Shadowcat
+264. Lockheed
+265. Doop
+266. Fantomex
+267. Deadpool
+268. Gwenpool
+269. Squirrel Girl
+270. Ms. Marvel
+271. Kamala Khan
+272. Moon Girl
+273. Devil Dinosaur
+274. Patriot
+275. Iron Lad
+276. Hulkling
+277. Wiccan
+278. Speed
+279. Kate Bishop
+280. America Chavez
+281. Hawkeye (Clint Barton)
+282. Hawkeye (Kate Bishop)
+283. Mockingbird
+284. Wonder Man
+285. Quicksilver
+286. Scarlet Witch
+287. Vision
+288. Wonder Man
+289. Beast
+290. Namor
+291. Sunfire
+292. Firestar
+293. Justice
+294. Speedball
+295. Rage
+296. Namorita
+297. Darkhawk
+298. Sleepwalker
+299. Gravity
+300. Ultra-Girl
+301. Blue Marvel
+302. Nightmask
+303. Starbrand
+304. Ex Nihilo
+305. Abyss
+306. Captain Universe
+307. Marvel Boy
+308. Noh-Varr
+309. Kid Kaiju
+310. Red She-Hulk
+311. A-Bomb
+312. Doc Samson
+313. Rick Jones
+314. Jack of Hearts
+315. Deathlok
+316. Deathlok Prime
+317. Machine Man
+318. Jocasta
+319. Living Lightning
+320. Stingray
+321. 3-D Man
+322. Gorilla-Man
+323. Human Robot
+324. Makkari
+325. Gilgamesh
+326. Ikaris
+327. Thena
+328. Sersi
+329. Kingo
+330. Phastos
+331. Druig
+332. Sprite
+333. Ajak
+334. Black Knight
+335. Starfox
+336. Pip the Troll
+337. Eros
+338. Hercules
+339. Ares
+340. Amadeus Cho
+341. Hercules
+342. Angela
+343. Sif
+344. Heimdall
+345. Balder
+346. Volstagg
+347. Fandral
+348. Hogun
+349. Thunderstrike
+350. Eric Masterson
+351. Red Wolf
+352. Brother Voodoo
+353. Man-Wolf
+354. Ka-Zar
+355. Shanna
+356. Black Panther
+357. Shuri
+358. White Tiger
+359. Echo
+360. Shang-Chi
+361. Iron Fist
+362. Luke Cage
+363. Misty Knight
+364. Colleen Wing
+365. Power Man
+366. White Tiger
+367. Misty Knight
+368. Paladin
+369. Solo
+370. Terror Inc.
+371. Rick Jones
+372. Mar-Vell
+373. Monica Rambeau
+374. Carol Danvers
+375. Genis-Vell
+376. Phyla-Vell
+377. Noh-Varr
+378. Hulkling
+379. Nova
+380. Quasar
+381. Star-Lord
+382. Adam Warlock
+383. Silver Surfer
+384. Beta Ray Bill
+385. Gladiator
+386. Corsair
+387. Hepzibah
+388. Raza
+389. Ch'od
+390. Groot
+391. Rocket
+392. Mantis
+393. Drax
+394. Gamora
+395. Yondu
+396. Cosmo
+397. Moondragon
+398. Major Victory
+399. Starhawk
+400. Nikki Gold
+401. Mister Sinister
+402. Magneto
+403. Emma Frost
+404. Mystique
+405. Juggernaut
+406. Sabretooth
+407. Apocalypse
+408. Deadpool
+409. Venom
+410. Eddie Brock
+411. Flash Thompson
+412. Agent Anti-Venom
+413. Morbius
+414. Prowler
+415. Cloak
+416. Dagger
+417. Namor
+418. Namorita
+419. Hercules
+420. Black Knight
+421. Squirrel Girl
+422. Howard the Duck
+423. Hit-Monkey
+424. Frog-Man
+425. Sleepwalker
+426. Darkhawk
+427. White Tiger
+428. Devil-Slayer
+429. Shroud
+430. Gravity
+431. Jack of Hearts
+432. Firebrand
+433. Union Jack
+434. Spitfire
+435. Captain Britain
+436. Captain Midlands
+437. Motormouth
+438. Death's Head
+439. Dark Angel
+440. Killpower
+441. Excalibur
+442. Wisdom
+443. Micromax
+444. Pete Wisdom
+445. Captain Avalon
+446. Union Jack
+447. Arabian Knight
+448. Sabra
+449. Collective Man
+450. Sword Master
+451. Aero
+452. Wave
+453. Luna Snow
+454. Crescent
+455. White Fox
+456. Lin Lie
+457. Sword Master
+458. Mantis
+459. Amadeus Cho
+460. Silk
+461. Aero
+462. Wave
+463. Shang-Chi
+464. Jimmy Woo
+465. Gorilla-Man
+466. Venus
+467. Marvel Boy
+468. Kid Kaiju
+469. White Tiger
+470. Radiance
+471. Spider-Man
+472. Spider-Girl
+473. Mayday Parker
+474. Spider-Man 2099
+475. Spider-Woman
+476. Spider-Man India
+477. Spider-Man Noir
+478. Spider-Punk
+479. Spider-Ham
+480. Spider-Monkey
+481. Spider-UK
+482. Spider-Man Japan
+483. Spider-Man (Pavitr Prabhakar)
+484. Spider-Girl (Anya Corazon)
+485. Spiderling
+486. Araña
+487. Madame Web
+488. Julia Carpenter
+489. May Parker
+490. Annie Parker
+491. Cyclops
+492. Wolverine
+493. Jean Grey
+494. Storm
+495. Rogue
+496. Gambit
+497. Beast
+498. Iceman
+499. Nightcrawler
+500. Colossus
+501. Kitty Pryde
+502. Jubilee
+503. Psylocke
+504. Bishop
+505. Cable
+506. X-23
+507. Magik
+508. Emma Frost
+509. Polaris
+510. Havok
+511. Sunfire
+512. Cannonball
+513. Sunspot
+514. Mirage
+515. Wolfsbane
+516. Warpath
+517. Forge
+518. Banshee
+519. Dazzler
+520. Domino
+521. Multiple Man
+522. Strong Guy
+523. Armor
+524. Pixie
+525. Dust
+526. Rockslide
+527. Anole
+528. Elixir
+529. Gentle
+530. Prodigy
