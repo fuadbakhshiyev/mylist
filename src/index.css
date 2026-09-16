@@ -3182,6 +3182,56 @@ textarea.auth-input {
   background: var(--surface-color);
 }
 
+/* Shared profile */
+.share-field {
+  display: flex;
+  gap: 8px;
+}
+
+.share-field .auth-input {
+  min-width: 0;
+}
+
+.share-field .btn {
+  flex-shrink: 0;
+  height: 48px;
+  padding: 0 20px;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.shared-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 12px 12px 12px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--surface-color);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.shared-banner .btn {
+  border: none;
+  font-size: 14px;
+}
+
+.shared-stale {
+  margin: -12px 0 24px;
+  color: #ff6b6f;
+  font-size: 13px;
+}
+
+.shared-sections {
+  margin-top: 32px;
+}
+
 .profile-back {
   display: inline-flex;
   align-items: center;

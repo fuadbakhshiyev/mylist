@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Check, Pencil } from 'lucide-react';
+import { ArrowRight, Check, Pencil, Share2 } from 'lucide-react';
+import { buildShareLink } from '../utils/shareProfile';
 import { mcuTimeline } from '../data/mcuData';
 import { titleDetails } from '../data/titleDetails';
 import { useAuth } from '../context/AuthContext';
@@ -85,12 +86,46 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
   );
 };
 
+const ShareModal = ({ link, onClose, onCopied }) => {
+  const [copied, setCopied] = useState(false);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopied(true);
+      onCopied();
+    } catch {
+      // Clipboard blocked (no permission or insecure context): select the text so it can be copied by hand
+      const input = document.getElementById('share-link-input');
+      input?.focus();
+      input?.select();
+    }
+  };
+
+  return (
+    <Modal onClose={onClose} labelledBy="share-profile-title" maxWidth={520}>
+      <div className="auth-form">
+        <h2 id="share-profile-title" className="auth-title">Share your profile</h2>
+        <p className="auth-subtitle">
+          Anyone with this link sees your progress, lists and favorites. The whole profile travels inside the link, so
+          it is a snapshot: mark new titles later and you'll need to share a fresh link.
+        </p>
+        <div className="share-field">
+          <input id="share-link-input" className="auth-input" value={link} readOnly aria-label="Share link" />
+          <button type="button" className="btn btn-primary" onClick={copy}>{copied ? 'Copied' : 'Copy'}</button>
+        </div>
+      </div>
+    </Modal>
+  );
+};
+
 const Profile = () => {
   const { user, updateProfile } = useAuth();
   const { items, watchedIds, counts } = useLibrary();
   const { toggleWatched } = useLibraryActions();
   const { showToast } = useToast();
   const [editing, setEditing] = useState(false);
+  const [shareLink, setShareLink] = useState(null);
   const [selectedActor, setSelectedActor] = useState(null);
   const [selectedHero, setSelectedHero] = useState(null);
   const [heroDetails, loadHeroDetails] = useHeroDetails();
@@ -154,6 +189,22 @@ const Profile = () => {
         </div>
         <div className="profile-header-actions">
           {/* Log out lives in the navbar avatar menu */}
+          <button
+            type="button"
+            className="btn profile-secondary-btn"
+            onClick={() => setShareLink(buildShareLink({
+              name: user.name,
+              bio: user.bio,
+              createdAt: user.createdAt,
+              watched: items('watched'),
+              watchlist: items('watchlist'),
+              favorites: items('favorites'),
+              actors: items('likedActors'),
+              heroes: items('likedHeroes'),
+            }))}
+          >
+            <Share2 size={16} aria-hidden="true" /> Share profile
+          </button>
           <button type="button" className="btn profile-secondary-btn" onClick={() => setEditing(true)}>
             <Pencil size={16} aria-hidden="true" /> Edit profile
           </button>
@@ -302,6 +353,14 @@ const Profile = () => {
             setEditing(false);
             showToast({ message: 'Profile updated.' });
           }}
+        />
+      )}
+
+      {shareLink && (
+        <ShareModal
+          link={shareLink}
+          onClose={() => setShareLink(null)}
+          onCopied={() => showToast({ message: 'Share link copied.' })}
         />
       )}
 

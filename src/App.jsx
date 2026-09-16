@@ -9,6 +9,7 @@ import Phases from './pages/Phases';
 import Auth from './pages/Auth';
 import Profile from './pages/Profile';
 import ProfileList from './pages/ProfileList';
+import SharedProfile from './pages/SharedProfile';
 import MovieDetails from './components/MovieDetails';
 import AuthModal from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
@@ -35,6 +36,7 @@ function App() {
                   <Route path="/signup" element={<Auth mode="signup" />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/profile/:section" element={<ProfileList />} />
+                  <Route path="/shared" element={<SharedProfile />} />
                 </Routes>
               </main>
             </div>
