@@ -130,19 +130,22 @@ const Profile = () => {
   const [selectedHero, setSelectedHero] = useState(null);
   const [heroDetails, loadHeroDetails] = useHeroDetails();
 
+  // Everything counts released titles only: an unreleased film can't be watched,
+  // so counting it as "left" would contradict the Up next card.
   const progress = useMemo(() => {
-    const watched = mcuTimeline.filter(movie => watchedIds.has(movie.id));
+    const released = mcuTimeline.filter(movie => !isUpcoming(movie.id));
+    const watched = released.filter(movie => watchedIds.has(movie.id));
     const byType = (type) => ({
       watched: watched.filter(movie => movie.type === type).length,
-      total: mcuTimeline.filter(movie => movie.type === type).length,
+      total: released.filter(movie => movie.type === type).length,
     });
     return {
       watched: watched.length,
-      total: mcuTimeline.length,
+      total: released.length,
+      upcoming: mcuTimeline.length - released.length,
       minutes: watched.reduce((sum, movie) => sum + titleMinutes(movie.id), 0),
-      // Time left counts released titles only, so an unreleased film can't inflate it
-      remainingMinutes: mcuTimeline
-        .filter(movie => !watchedIds.has(movie.id) && !isUpcoming(movie.id))
+      remainingMinutes: released
+        .filter(movie => !watchedIds.has(movie.id))
         .reduce((sum, movie) => sum + titleMinutes(movie.id), 0),
       films: byType('Movie'),
       series: byType('TV'),
@@ -152,6 +155,14 @@ const Profile = () => {
 
   // First released title in watch order that isn't watched yet
   const upNext = useMemo(() => mcuTimeline.find(movie => !watchedIds.has(movie.id) && !isUpcoming(movie.id)), [watchedIds]);
+
+  // Once everything released is watched, the card shows what releases next instead of sitting empty
+  const nextRelease = useMemo(() => {
+    if (upNext) return null;
+    return mcuTimeline
+      .filter(movie => isUpcoming(movie.id))
+      .sort((a, b) => new Date(titleDetails[a.id].releaseDate) - new Date(titleDetails[b.id].releaseDate))[0] || null;
+  }, [upNext]);
 
   if (!user) return <ProfileSignIn next="/profile" />;
 
@@ -241,10 +252,13 @@ const Profile = () => {
             <div className="profile-progress-text">
               <p id="profile-progress-label" className="profile-card-label">MCU progress</p>
               <p className="profile-progress-count">
-                <strong>{progress.watched}</strong> of {progress.total} titles
+                <strong>{progress.watched}</strong> of {progress.total} released titles
               </p>
               <p className="profile-caption">
-                {progress.total - progress.watched} left · {formatHours(progress.remainingMinutes)} to go
+                {progress.total > progress.watched
+                  ? `${progress.total - progress.watched} left · ${formatHours(progress.remainingMinutes)} to go`
+                  : 'All caught up'}
+                {progress.upcoming > 0 && ` · ${progress.upcoming} upcoming`}
               </p>
             </div>
           </div>
@@ -273,7 +287,7 @@ const Profile = () => {
 
         <section className="profile-card profile-upnext-card" aria-labelledby="profile-upnext-label">
           <p id="profile-upnext-label" className="profile-card-label">
-            Up next{upNext ? ` · #${Number(upNext.order)}` : ''}
+            {upNext ? `Up next · #${Number(upNext.order)}` : nextRelease ? 'Next release' : 'Up next'}
           </p>
           {upNext ? (
             <div className="profile-upnext">
@@ -288,12 +302,24 @@ const Profile = () => {
                 </p>
               </div>
             </div>
+          ) : nextRelease ? (
+            <div className="profile-upnext">
+              <Link to={`/movie/${nextRelease.id}`} className="profile-upnext-poster" aria-hidden="true" tabIndex={-1}>
+                <img src={nextRelease.poster} alt="" referrerPolicy="no-referrer" />
+              </Link>
+              <div className="profile-upnext-body">
+                <Link to={`/movie/${nextRelease.id}`} className="profile-upnext-title">{nextRelease.title}</Link>
+                <p className="profile-upnext-meta">
+                  You're all caught up. Releases {titleDetails[nextRelease.id].releaseDate}.
+                </p>
+              </div>
+            </div>
           ) : (
             <p className="profile-caption">You're all caught up with every released title.</p>
           )}
 
           {/* Full card width, so both buttons fit on one row */}
-          {upNext && (
+          {upNext ? (
             <div className="profile-upnext-actions">
               <button type="button" className="md-action md-action-watched" onClick={() => toggleWatched(upNext.id)}>
                 <Check size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -301,7 +327,11 @@ const Profile = () => {
               </button>
               <Link to={`/movie/${upNext.id}`} className="md-action">Details</Link>
             </div>
-          )}
+          ) : nextRelease ? (
+            <div className="profile-upnext-actions">
+              <Link to={`/movie/${nextRelease.id}`} className="md-action">Details</Link>
+            </div>
+          ) : null}
         </section>
       </div>
 

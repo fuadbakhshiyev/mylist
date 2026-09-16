@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { mcuTimeline } from '../data/mcuData';
 import { decodeProfile } from '../utils/shareProfile';
-import { formatHours, titleMinutes, titlesById } from '../utils/titleStats';
+import { formatHours, isUpcoming, titleMinutes, titlesById } from '../utils/titleStats';
 import {
   ActorTile, HeroTile, TitlePoster,
   actorsByName, heroesByName, initials, useHeroDetails,
@@ -20,17 +20,20 @@ const SharedProfile = () => {
   const [selectedHero, setSelectedHero] = useState(null);
   const [heroDetails, loadHeroDetails] = useHeroDetails();
 
+  // Released titles only, the same basis the owner's profile uses
   const progress = useMemo(() => {
     if (!profile) return null;
     const watchedSet = new Set(profile.watched);
-    const watched = mcuTimeline.filter(movie => watchedSet.has(movie.id));
+    const released = mcuTimeline.filter(movie => !isUpcoming(movie.id));
+    const watched = released.filter(movie => watchedSet.has(movie.id));
     const byType = (type) => ({
       watched: watched.filter(movie => movie.type === type).length,
-      total: mcuTimeline.filter(movie => movie.type === type).length,
+      total: released.filter(movie => movie.type === type).length,
     });
     return {
       watched: watched.length,
-      total: mcuTimeline.length,
+      total: released.length,
+      upcoming: mcuTimeline.length - released.length,
       minutes: watched.reduce((sum, movie) => sum + titleMinutes(movie.id), 0),
       films: byType('Movie'),
       series: byType('TV'),
@@ -130,9 +133,12 @@ const SharedProfile = () => {
           <div className="profile-progress-text">
             <p id="shared-progress-label" className="profile-card-label">MCU progress</p>
             <p className="profile-progress-count">
-              <strong>{progress.watched}</strong> of {progress.total} titles
+              <strong>{progress.watched}</strong> of {progress.total} released titles
             </p>
-            <p className="profile-caption">{formatHours(progress.minutes)} watched</p>
+            <p className="profile-caption">
+              {formatHours(progress.minutes)} watched
+              {progress.upcoming > 0 && ` · ${progress.upcoming} upcoming`}
+            </p>
           </div>
         </div>
 
