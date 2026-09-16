@@ -17,6 +17,7 @@ import {
 import { ActorModal, HeroModal } from './Characters';
 
 const ROW_LIMIT = 7;
+const RING = 2 * Math.PI * 52; // circumference of the progress ring
 
 const EditProfileModal = ({ user, onClose, onSave }) => {
   const [name, setName] = useState(user.name);
@@ -105,6 +106,10 @@ const Profile = () => {
       watched: watched.length,
       total: mcuTimeline.length,
       minutes: watched.reduce((sum, movie) => sum + titleMinutes(movie.id), 0),
+      // Time left counts released titles only, so an unreleased film can't inflate it
+      remainingMinutes: mcuTimeline
+        .filter(movie => !watchedIds.has(movie.id) && !isUpcoming(movie.id))
+        .reduce((sum, movie) => sum + titleMinutes(movie.id), 0),
       films: byType('Movie'),
       series: byType('TV'),
       specials: byType('Special'),
@@ -166,54 +171,95 @@ const Profile = () => {
       </header>
 
       <div className="profile-summary">
-        <section className="profile-card" aria-labelledby="profile-progress-label">
-          <p id="profile-progress-label" className="profile-card-label">MCU progress</p>
-          <div className="profile-progress-head">
-            <span>{progress.watched} of {progress.total} watched</span>
-            <span>{percent}%</span>
+        <section className="profile-card profile-progress-card" aria-labelledby="profile-progress-label">
+          <div className="profile-progress-main">
+            <div
+              className="profile-ring"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={progress.total}
+              aria-valuenow={progress.watched}
+              aria-valuetext={`${progress.watched} of ${progress.total} titles watched`}
+            >
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle className="profile-ring-track" cx="60" cy="60" r="52" />
+                <circle
+                  className="profile-ring-fill"
+                  cx="60"
+                  cy="60"
+                  r="52"
+                  style={{ strokeDasharray: RING, strokeDashoffset: RING * (1 - percent / 100) }}
+                />
+              </svg>
+              <div className="profile-ring-value">
+                <strong>{percent}%</strong>
+                <span>watched</span>
+              </div>
+            </div>
+
+            <div className="profile-progress-text">
+              <p id="profile-progress-label" className="profile-card-label">MCU progress</p>
+              <p className="profile-progress-count">
+                <strong>{progress.watched}</strong> of {progress.total} titles
+              </p>
+              <p className="profile-caption">
+                {progress.total - progress.watched} left · {formatHours(progress.remainingMinutes)} to go
+              </p>
+            </div>
           </div>
-          <div
-            className="profile-progress-bar"
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={progress.total}
-            aria-valuenow={progress.watched}
-            aria-valuetext={`${progress.watched} of ${progress.total} titles watched`}
-          >
-            <div className="profile-progress-fill" style={{ width: `${percent}%` }} />
-          </div>
-          <div className="profile-stats">
-            <div className="profile-stat"><strong>{formatHours(progress.minutes)}</strong><span>watched</span></div>
-            <div className="profile-stat"><strong>{progress.films.watched} / {progress.films.total}</strong><span>films</span></div>
-            <div className="profile-stat"><strong>{progress.series.watched} / {progress.series.total}</strong><span>series</span></div>
-            <div className="profile-stat"><strong>{progress.specials.watched} / {progress.specials.total}</strong><span>specials</span></div>
-          </div>
+
+          <dl className="profile-stats">
+            <div className="profile-stat">
+              <dt>Films</dt>
+              <dd>{progress.films.watched}<span> / {progress.films.total}</span></dd>
+            </div>
+            <div className="profile-stat">
+              <dt>Series</dt>
+              <dd>{progress.series.watched}<span> / {progress.series.total}</span></dd>
+            </div>
+            <div className="profile-stat">
+              <dt>Specials</dt>
+              <dd>{progress.specials.watched}<span> / {progress.specials.total}</span></dd>
+            </div>
+            <div className="profile-stat">
+              <dt>Watched</dt>
+              <dd>{formatHours(progress.minutes)}</dd>
+            </div>
+          </dl>
+
           <p className="profile-caption">Counts what you've marked in MCU Tracker.</p>
         </section>
 
-        <section className="profile-card" aria-labelledby="profile-upnext-label">
+        <section className="profile-card profile-upnext-card" aria-labelledby="profile-upnext-label">
           <p id="profile-upnext-label" className="profile-card-label">
             Up next{upNext ? ` · #${Number(upNext.order)}` : ''}
           </p>
           {upNext ? (
             <div className="profile-upnext">
-              <Link to={`/movie/${upNext.id}`} aria-hidden="true" tabIndex={-1}>
+              <Link to={`/movie/${upNext.id}`} className="profile-upnext-poster" aria-hidden="true" tabIndex={-1}>
                 <img src={upNext.poster} alt="" referrerPolicy="no-referrer" />
               </Link>
-              <div>
+              <div className="profile-upnext-body">
                 <Link to={`/movie/${upNext.id}`} className="profile-upnext-title">{upNext.title}</Link>
                 <p className="profile-upnext-meta">
                   {upNext.type === 'Movie' ? 'Film' : upNext.type === 'TV' ? 'Series' : 'Special'}
                   {titleDetails[upNext.id]?.duration ? ` · ${titleDetails[upNext.id].duration}` : ''}
                 </p>
-                <button type="button" className="md-action md-action-watched" onClick={() => toggleWatched(upNext.id)}>
-                  <Check size={16} strokeWidth={2.5} aria-hidden="true" />
-                  <span>Mark watched</span>
-                </button>
               </div>
             </div>
           ) : (
             <p className="profile-caption">You're all caught up with every released title.</p>
+          )}
+
+          {/* Full card width, so both buttons fit on one row */}
+          {upNext && (
+            <div className="profile-upnext-actions">
+              <button type="button" className="md-action md-action-watched" onClick={() => toggleWatched(upNext.id)}>
+                <Check size={16} strokeWidth={2.5} aria-hidden="true" />
+                <span>Mark watched</span>
+              </button>
+              <Link to={`/movie/${upNext.id}`} className="md-action">Details</Link>
+            </div>
           )}
         </section>
       </div>
