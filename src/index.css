@@ -1267,6 +1267,7 @@ h2 {
 }
 
 .md-hero {
+  position: relative;
   border-radius: 20px;
   padding: 40px;
   display: flex;
@@ -2411,11 +2412,32 @@ textarea.auth-input {
 }
 
 /* Detail page actions (also used in popups and the profile) */
+/* Actions live in the hero's top-right corner, icon-only, so they don't sit in the same row rhythm as the genre chips */
 .md-actions {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 2;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 8px;
+  margin: 0;
+}
+
+.md-actions .md-action {
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+}
+
+/* Label stays readable for screen readers while the button shows only its icon */
+.md-actions .md-action span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 .md-action {
@@ -2463,10 +2485,25 @@ textarea.auth-input {
 }
 
 @media (max-width: 768px) {
+  /* Too narrow for a corner overlay: back into the flow, with labels */
   .md-actions {
+    position: static;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
     gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .md-actions .md-action {
+    width: auto;
+    padding: 0 8px;
+  }
+
+  .md-actions .md-action span {
+    position: static;
+    width: auto;
+    height: auto;
+    clip: auto;
   }
 
   .md-action {

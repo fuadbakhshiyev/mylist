@@ -165,6 +165,7 @@ const MovieDetails = () => {
                 <button
                   type="button"
                   className={`md-action md-action-watched ${watched ? 'active' : ''}`}
+                  title={watched ? 'Watched — click to undo' : 'Mark as watched'}
                   onClick={() => toggleWatched(movie.id)}
                 >
                   <Check size={18} strokeWidth={watched ? 3 : 2.5} aria-hidden="true" />
@@ -174,6 +175,7 @@ const MovieDetails = () => {
               <button
                 type="button"
                 className={`md-action md-action-watchlist ${inWatchlist ? 'active' : ''}`}
+                title={inWatchlist ? 'Remove from watchlist' : 'Add to watchlist'}
                 onClick={() => toggleWatchlist(movie.id)}
               >
                 <Bookmark size={18} fill={inWatchlist ? 'currentColor' : 'none'} aria-hidden="true" />
@@ -183,6 +185,7 @@ const MovieDetails = () => {
                 <button
                   type="button"
                   className={`md-action md-action-favorite ${favorite ? 'active' : ''}`}
+                  title={favorite ? 'Remove from favorites' : 'Add to favorites'}
                   onClick={() => toggleFavorite('favorites', movie.id)}
                 >
                   <Heart size={18} fill={favorite ? 'currentColor' : 'none'} aria-hidden="true" />
