@@ -2733,11 +2733,9 @@ textarea.auth-input {
   background: var(--surface-hover);
 }
 
-/* start, not stretch: the Up next card keeps its own height instead of matching the progress card */
 .profile-summary {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
-  align-items: start;
   gap: 16px;
   margin-bottom: 32px;
 }
@@ -2920,12 +2918,21 @@ textarea.auth-input {
   font-size: 13px;
 }
 
+/* Both cards are the same height, so the buttons sit at the bottom instead of
+   leaving a gap under them */
+.profile-upnext-card {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Side by side, each button as wide as its own label: equal widths squeezed
    "Mark watched" onto two lines inside a fixed-height pill */
 .profile-upnext-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-top: auto;
+  padding-top: 16px;
 }
 
 .profile-upnext-actions .md-action {

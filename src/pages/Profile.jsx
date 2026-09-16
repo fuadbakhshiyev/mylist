@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Check, LogOut, Pencil } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Check, Pencil } from 'lucide-react';
 import { mcuTimeline } from '../data/mcuData';
 import { titleDetails } from '../data/titleDetails';
 import { useAuth } from '../context/AuthContext';
@@ -86,11 +86,10 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
 };
 
 const Profile = () => {
-  const { user, logOut, updateProfile } = useAuth();
+  const { user, updateProfile } = useAuth();
   const { items, watchedIds, counts } = useLibrary();
   const { toggleWatched } = useLibraryActions();
   const { showToast } = useToast();
-  const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [selectedActor, setSelectedActor] = useState(null);
   const [selectedHero, setSelectedHero] = useState(null);
@@ -154,18 +153,9 @@ const Profile = () => {
           {user.bio && <p className="profile-bio">{user.bio}</p>}
         </div>
         <div className="profile-header-actions">
+          {/* Log out lives in the navbar avatar menu */}
           <button type="button" className="btn profile-secondary-btn" onClick={() => setEditing(true)}>
             <Pencil size={16} aria-hidden="true" /> Edit profile
-          </button>
-          <button
-            type="button"
-            className="btn profile-secondary-btn"
-            onClick={() => {
-              logOut();
-              navigate('/');
-            }}
-          >
-            <LogOut size={16} aria-hidden="true" /> Log out
           </button>
         </div>
       </header>
