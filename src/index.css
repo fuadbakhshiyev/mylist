@@ -2883,16 +2883,19 @@ textarea.auth-input {
   font-size: 13px;
 }
 
-/* Side by side and equal width, so they fit the narrow card without stacking */
+/* Side by side, each button as wide as its own label: equal widths squeezed
+   "Mark watched" onto two lines inside a fixed-height pill */
 .profile-upnext-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
 .profile-upnext-actions .md-action {
-  flex: 1;
+  flex: 0 1 auto;
   justify-content: center;
-  padding: 0 10px;
+  padding: 0 14px;
+  white-space: nowrap;
 }
 
 .profile-upnext .md-action {
